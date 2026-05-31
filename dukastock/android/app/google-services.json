@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1014845837028",
+    "project_id": "dukastock-1325e",
+    "storage_bucket": "dukastock-1325e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1014845837028:android:a02b89cbe1ab60d47b26f1",
+        "android_client_info": {
+          "package_name": "com.jokacoded.dukastock"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2Bsy0HTzYS1rKIHtLruHsl3OokOuNfSY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1014845837028:android:4f8615fabc2a4fa27b26f1",
+        "android_client_info": {
+          "package_name": "com.jokacoded.dukastock.dukastock"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2Bsy0HTzYS1rKIHtLruHsl3OokOuNfSY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
