@@ -2,14 +2,35 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../constants.dart';
 import 'login_screen.dart';
+import 'product_catalog_screen.dart';
+import 'add_product_screen.dart';
+import '../services/storage_service.dart';
 
-class DashboardScreen extends StatelessWidget {
+class DashboardScreen extends StatefulWidget {
   final String role;
   const DashboardScreen({super.key, required this.role});
 
   @override
+  State<DashboardScreen> createState() => _DashboardScreenState();
+}
+
+class _DashboardScreenState extends State<DashboardScreen> {
+  String _userName = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadName();
+  }
+
+  Future<void> _loadName() async {
+    final name = await StorageService.getName();
+    setState(() => _userName = name ?? '');
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final isWholesaler = role == 'wholesaler';
+    final isWholesaler = widget.role == 'wholesaler';
 
     final retailerItems = [
       _MenuItem(Icons.search, 'Browse Products',
@@ -84,9 +105,9 @@ class DashboardScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        isWholesaler
-                            ? 'Welcome, Wholesaler!'
-                            : 'Welcome, Retailer!',
+                  isWholesaler
+                  ? 'Welcome, ${_userName.isNotEmpty ? _userName : "Wholesaler"}!'
+                      : 'Welcome, ${_userName.isNotEmpty ? _userName : "Retailer"}!',
                         style: const TextStyle(
                           fontSize: 22,
                           fontWeight: FontWeight.w600,
@@ -129,7 +150,24 @@ class DashboardScreen extends StatelessWidget {
                     physics: const NeverScrollableScrollPhysics(),
                     crossAxisSpacing: 12,
                     mainAxisSpacing: 12,
-                    children: items.map((item) => _menuCard(item)).toList(),
+                    children: items.asMap().entries.map((entry) {
+                      final index = entry.key;
+                      final item = entry.value;
+                      return GestureDetector(
+                        onTap: () {
+                          if (!isWholesaler && index == 0) {
+                            // Retailer - Browse Products
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (_) => const ProductCatalogScreen()));
+                          } else if (isWholesaler && index == 0) {
+                            // Wholesaler - Manage Stock
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (_) => const AddProductScreen()));
+                          }
+                        },
+                        child: _menuCard(item),
+                      );
+                    }).toList(),
                   ),
                 ],
               ),

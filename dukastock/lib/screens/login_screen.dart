@@ -6,6 +6,7 @@ import '../widgets/shared_widgets.dart';
 import 'register_screen.dart';
 import 'reset_password_screen.dart';
 import 'dashboard_screen.dart';
+import '../services/storage_service.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -50,6 +51,12 @@ class _LoginScreenState extends State<LoginScreen> {
             .doc(user.uid)
             .get();
         final role = doc.data()?['role'] ?? 'retailer';
+        final name = doc.data()?['name'] ?? '';
+        await StorageService.saveUser(
+          name: name,
+          role: role,
+          email: _emailController.text.trim(),
+        );
         if (!mounted) return;
         Navigator.pushReplacement(
           context,

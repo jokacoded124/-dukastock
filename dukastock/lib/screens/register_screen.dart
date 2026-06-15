@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../constants.dart';
 import '../widgets/shared_widgets.dart';
 import 'dashboard_screen.dart';
+import '../services/storage_service.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -60,6 +61,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
         'role': _selectedRole,
         'createdAt': FieldValue.serverTimestamp(),
       });
+      await StorageService.saveUser(
+        name: _nameController.text.trim(),
+        role: _selectedRole,
+        email: _emailController.text.trim(),
+      );
       if (!mounted) return;
       Navigator.pushReplacement(
         context,
