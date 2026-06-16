@@ -5,6 +5,7 @@ import 'login_screen.dart';
 import 'product_catalog_screen.dart';
 import 'add_product_screen.dart';
 import '../services/storage_service.dart';
+import '../widgets/offline_banner.dart';
 
 class DashboardScreen extends StatefulWidget {
   final String role;
@@ -60,6 +61,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
       backgroundColor: const Color(0xFFF8F8F8),
       body: Column(
         children: [
+          // Offline indicator — shows automatically when connection drops
+          const OfflineBanner(),
+
           // Header
           Container(
             color: kGreen,
@@ -105,9 +109,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                  isWholesaler
-                  ? 'Welcome, ${_userName.isNotEmpty ? _userName : "Wholesaler"}!'
-                      : 'Welcome, ${_userName.isNotEmpty ? _userName : "Retailer"}!',
+                        isWholesaler
+                            ? 'Welcome, ${_userName.isNotEmpty ? _userName : "Wholesaler"}!'
+                            : 'Welcome, ${_userName.isNotEmpty ? _userName : "Retailer"}!',
                         style: const TextStyle(
                           fontSize: 22,
                           fontWeight: FontWeight.w600,

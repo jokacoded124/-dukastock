@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../constants.dart';
 import '../widgets/shared_widgets.dart';
+import '../services/connectivity_service.dart';
 
 class AddProductScreen extends StatefulWidget {
   const AddProductScreen({super.key});
@@ -52,6 +53,19 @@ class _AddProductScreenState extends State<AddProductScreen> {
       _errorMessage = '';
     });
 
+    // Check connectivity before attempting the network call — fast,
+    // local check, avoids a doomed request and gives the user an
+    // immediate, clear message instead of a hanging spinner.
+    final online = await ConnectivityService.isOnline();
+    if (!online) {
+      setState(() {
+        _isLoading = false;
+        _errorMessage =
+        'No internet connection. Please reconnect and try again.';
+      });
+      return;
+    }
+
     try {
       final user = FirebaseAuth.instance.currentUser;
       await FirebaseFirestore.instance.collection('products').add({
@@ -71,10 +85,20 @@ class _AddProductScreenState extends State<AddProductScreen> {
         const SnackBar(content: Text('Product added successfully!')),
       );
       Navigator.pop(context);
+    } on FirebaseException catch (e) {
+      // Firebase-specific errors (permission-denied, unavailable, etc.)
+      // give a more useful message than a raw exception string.
+      setState(() {
+        _errorMessage =
+        'Failed to save product: ${e.message ?? "Unknown Firebase error"}';
+      });
     } catch (e) {
-      setState(() => _errorMessage = 'Failed to save product: $e');
+      // Fallback for anything else (timeout, dropped connection mid-write).
+      setState(() {
+        _errorMessage = 'Something went wrong. Please try again.';
+      });
     } finally {
-      setState(() => _isLoading = false);
+      if (mounted) setState(() => _isLoading = false);
     }
   }
 
