@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # dukastock
 
 A new Flutter project.
@@ -16,7 +15,3 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
-=======
-# -dukastock
-A B2B mobile marketplace connecting wholesalers and retailers in Kenya
->>>>>>> 84904242f54b158c5cb79b6bfbe6099a47f8016e
